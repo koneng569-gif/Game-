@@ -1,24 +1,89 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Game Tebak Angka</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Game Tebak Angka</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+}
+.card{
+  background:white;
+  padding:30px;
+  width:320px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+input,button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  font-size:16px;
+}
+button{
+  border:none;
+  border-radius:10px;
+  background:#667eea;
+  color:white;
+}
+.reset{
+  background:#e53e3e;
+}
+#hasil{
+  margin-top:15px;
+  font-weight:bold;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="game">
-    <h1>🎯 Tebak Angka</h1>
-    <p>Masukkan angka 1 - 10</p>
+<div class="card">
+  <h1>🎯 Tebak Angka</h1>
+  <p>Masukkan angka 1 - 10</p>
 
-    <input type="number" id="tebakan" min="1" max="10">
-    <button onclick="cekAngka()">Tebak</button>
+  <input id="tebakan" type="number" min="1" max="10">
+  <button onclick="cekAngka()">Tebak</button>
+  <button class="reset" onclick="ulang()">Ulang</button>
 
-    <p id="hasil"></p>
+  <p id="hasil"></p>
+</div>
 
-    <button class="ulang" onclick="ulangGame()">Ulang Game</button>
-  </div>
+<script>
+let angka = Math.floor(Math.random()*10)+1;
 
-  <script src="script.js"></script>
+function cekAngka(){
+  let t = document.getElementById("tebakan").value;
+  let h = document.getElementById("hasil");
+
+  if(t==""){
+    h.innerHTML="⚠️ Masukkan angka!";
+    return;
+  }
+
+  if(t < angka){
+    h.innerHTML="❌ Terlalu kecil";
+  }else if(t > angka){
+    h.innerHTML="❌ Terlalu besar";
+  }else{
+    h.innerHTML="🎉 BENAR!";
+  }
+}
+
+function ulang(){
+  angka = Math.floor(Math.random()*10)+1;
+  document.getElementById("tebakan").value="";
+  document.getElementById("hasil").innerHTML="";
+}
+</script>
+
 </body>
 </html>
