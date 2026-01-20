@@ -12,16 +12,18 @@ body{
   justify-content:center;
   align-items:center;
   font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#667eea,#764ba2);
+  background:linear-gradient(135deg,#4facfe,#8f5cff);
 }
 .card{
   background:white;
   padding:30px;
-  width:320px;
+  width:330px;
   border-radius:20px;
   text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
+h1{margin-bottom:5px;}
+p{margin:5px 0;}
 input,button{
   width:100%;
   padding:10px;
@@ -31,15 +33,19 @@ input,button{
 button{
   border:none;
   border-radius:10px;
-  background:#667eea;
+  background:#4facfe;
   color:white;
+  cursor:pointer;
 }
-.reset{
-  background:#e53e3e;
-}
+button:hover{opacity:.9;}
+.reset{background:#e63946;}
 #hasil{
   margin-top:15px;
   font-weight:bold;
+}
+.nyawa{
+  margin-top:10px;
+  font-size:18px;
 }
 </style>
 </head>
@@ -48,40 +54,60 @@ button{
 
 <div class="card">
   <h1>🎯 Tebak Angka</h1>
-  <p>Masukkan angka 1 - 10</p>
+  <p>Tebak angka <b>1 - 100</b></p>
 
-  <input id="tebakan" type="number" min="1" max="10">
+  <div class="nyawa">💖 Nyawa: <span id="nyawa">10</span></div>
+
+  <input id="tebakan" type="number" min="1" max="100" placeholder="Masukkan angka">
   <button onclick="cekAngka()">Tebak</button>
-  <button class="reset" onclick="ulang()">Ulang</button>
+  <button class="reset" onclick="ulang()">Ulang Game</button>
 
   <p id="hasil"></p>
 </div>
 
 <script>
-let angka = Math.floor(Math.random()*10)+1;
+let angka = Math.floor(Math.random()*100)+1;
+let nyawa = 10;
 
 function cekAngka(){
-  let t = document.getElementById("tebakan").value;
+  let t = Number(document.getElementById("tebakan").value);
   let h = document.getElementById("hasil");
 
-  if(t==""){
-    h.innerHTML="⚠️ Masukkan angka!";
+  if(!t || t < 1 || t > 100){
+    h.innerHTML = "⚠️ Masukkan angka 1 - 100";
+    h.style.color = "orange";
     return;
   }
 
-  if(t < angka){
-    h.innerHTML="❌ Terlalu kecil";
-  }else if(t > angka){
-    h.innerHTML="❌ Terlalu besar";
-  }else{
-    h.innerHTML="🎉 BENAR!";
+  if(t === angka){
+    if(nyawa < 10) nyawa++;
+    h.innerHTML = "🎉 BENAR! Nyawa +1";
+    h.style.color = "green";
+    angka = Math.floor(Math.random()*100)+1;
+  } else {
+    nyawa--;
+    if(t < angka){
+      h.innerHTML = "❌ Terlalu kecil";
+    } else {
+      h.innerHTML = "❌ Terlalu besar";
+    }
+    h.style.color = "red";
+  }
+
+  document.getElementById("nyawa").innerText = nyawa;
+
+  if(nyawa <= 0){
+    h.innerHTML = "💀 GAME OVER";
+    document.getElementById("nyawa").innerText = 0;
   }
 }
 
 function ulang(){
-  angka = Math.floor(Math.random()*10)+1;
-  document.getElementById("tebakan").value="";
-  document.getElementById("hasil").innerHTML="";
+  angka = Math.floor(Math.random()*100)+1;
+  nyawa = 10;
+  document.getElementById("nyawa").innerText = nyawa;
+  document.getElementById("hasil").innerHTML = "";
+  document.getElementById("tebakan").value = "";
 }
 </script>
 
